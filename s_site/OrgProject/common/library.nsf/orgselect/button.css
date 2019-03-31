@@ -1,0 +1,256 @@
+@charset "utf-8";
+
+
+/* 버튼 디자인  */
+.tit-btnArea {
+	overflow:hidden;
+}
+.btnwrap { 
+	overflow:hidden;
+	padding:2px 0 0 20px;
+}
+
+.l-Area { 
+	float:left;
+}
+.r-Area { 
+	float:right;
+}
+.l-btn { 
+	display: inline-block;
+	height:26px;
+	line-height:26px;
+	padding:0 8px 0 4px;
+	border:1px solid #ccc;
+	border-radius:4px;
+	behavior: url( "/comn/globallibrary.nsf/vwResource/PIE.htc" );
+	background:url('../images/button/btnbg.png') repeat-x;
+}
+.l-btn:hover { 
+	background:#fff;	
+	border:1px solid #aaa;
+}
+.l-btn em { 
+	display:inline-block;
+	height:26px;
+	line-height:22px;
+	font-weight:bold;
+	vertical-align:top;
+	font-style:normal;
+	color:#444;
+	font-size:12px;
+	font-family:'Malgun Gothic', 'Dotum', 'Arial', 'Helvetica', sans-serif;
+	letter-spacing:-0.5px;
+}
+.l-btn i { 
+	display:inline-block;
+	height:26px;
+	width:24px;	
+	vertical-align:top;
+	background:url('../images/button/icon_set.png') no-repeat;
+}
+.l-btn:hover i { 
+	background:url('../images/button/icon_set_on.png') no-repeat;
+}
+
+
+.l-btn i.icon01,
+.l-btn i.icon02,
+.l-btn i.icon11,
+.l-btn i.icon15,
+.l-btn i.icon16,
+.l-btn i.icon55,
+.l-btn i.icon62,
+.l-btn i.icon65,
+.l-btn i.icon73,
+.l-btn i.icon79,
+.l-btn i.icon85,
+.l-btn i.icon90 { 
+	background-position:0 1px;
+}
+.l-btn i.icon04,
+.l-btn i.icon47,
+.l-btn i.icon86 { 
+	background-position:-25px 1px;
+}
+.l-btn i.icon09,
+.l-btn i.icon22,
+.l-btn i.icon48,
+.l-btn i.icon50,
+.l-btn i.icon60,
+.l-btn i.icon69,
+.l-btn i.icon81,
+.l-btn i.icon83,
+.l-btn i.icon94 { 
+	background-position:-50px 1px;
+}
+.l-btn i.icon06,
+.l-btn i.icon07,
+.l-btn i.icon12,
+.l-btn i.icon58,
+.l-btn i.icon93 { 
+	background-position:-75px 1px;
+}
+.l-btn i.icon41 { 
+	background-position: 0px -26px;
+}
+.l-btn i.icon08,
+.l-btn i.icon32,
+.l-btn i.icon42,
+.l-btn i.icon46,
+.l-btn i.icon57,
+.l-btn i.icon59,
+.l-btn i.icon68 { 
+	background-position: -25px -26px;
+}
+.l-btn i.icon03 { 
+	background-position: -150px -125px;
+}
+.l-btn i.icon05,
+.l-btn i.icon75 { 
+	background-position: -25px -125px;
+}
+.l-btn i.icon10,
+.l-btn i.icon31,
+.l-btn i.icon71,
+.l-btn i.icon78,
+.l-btn i.icon82 { 
+	background-position: -100px -25px;
+}
+.l-btn i.icon13,
+.l-btn i.icon24,
+.l-btn i.icon33,
+.l-btn i.icon34,
+.l-btn i.icon40,
+.l-btn i.icon54,
+.l-btn i.icon66,
+.l-btn i.icon67,
+.l-btn i.icon88,
+.l-btn i.icon92 { 
+	background-position: -50px -25px;
+}
+.l-btn i.icon14,
+.l-btn i.icon52,
+.l-btn i.icon89 { 
+	background-position: -50px -74px;
+}
+.l-btn i.icon17 { 
+	background-position: -75px -125px;
+}
+.l-btn i.icon18,
+.l-btn i.icon70 { 
+	background-position: -75px -24px;
+}
+.l-btn i.icon19,
+.l-btn i.icon21,
+.l-btn i.icon35,
+.l-btn i.icon49 { 
+	background-position: -125px -25px;
+}
+.l-btn i.icon20 { 
+	background-position: -100px -51px;
+}
+.l-btn i.icon23 { 
+	background-position:-50px -126px;
+}
+.l-btn i.icon25,
+.l-btn i.icon26,
+.l-btn i.icon61 { 
+	background-position:-50px -150px
+}
+.l-btn i.icon27,
+.l-btn i.icon28{ 
+	background-position:-150px -50px
+}
+.l-btn i.icon29,
+.l-btn i.icon43,
+.l-btn i.icon51,
+.l-btn i.icon63 { 
+	background-position:-150px -25px;
+}
+.l-btn i.icon30 { 
+	background-position:0px -125px
+}
+.l-btn i.icon36,
+.l-btn i.icon72{ 
+	background-position: -125px -100px
+}
+.l-btn i.icon37 { 
+	background-position:-125px -125px
+}
+.l-btn i.icon38 { 
+	background-position:-100px -125px
+}
+.l-btn i.icon39 { 
+	background-position: 0px -150px
+}
+.l-btn i.icon44 { 
+	background-position: 0px -75px
+}
+.l-btn i.icon45 { 
+	background-position: -125px -49px
+}
+.l-btn i.icon53 { 
+	background-position: -75px -75px
+}
+.l-btn i.icon56 { 
+	background-position: -100px -75px
+}
+.l-btn i.icon64 { 
+	background-position: -125px -75px
+}
+.l-btn i.icon74 { 
+	background-position: -125px 1px
+}
+.l-btn i.icon76,
+.l-btn i.icon77,
+.l-btn i.icon95 { 
+	background-position: -150px -75px
+}
+.l-btn i.icon80 { 
+	background-position: -75px -100px
+}
+.l-btn i.icon84 { 
+	background-position: -25px -150px
+}
+.l-btn i.icon87 { 
+	background-position: -50px -100px
+}
+.l-btn i.icon91 { 
+	background-position: -25px -100px
+}
+.l-btn i.icon96 { 
+	background-position: -150px 1px;
+}
+.l-btn i.icon97 { 
+	background-position: -75px -50px;
+}
+
+/* 달력 버튼 */
+.calendarBtn { 
+	display:inline-block;
+	width:26px;
+	height:26px;
+	background:url('../images/common/ico_date.png') no-repeat 50%;
+	text-indent:-9999px;
+	vertical-align:top;
+}
+/* 수신함 아이콘 추가 */
+.infoicon.icon08 { 
+	background:url('../images/common/t-icon08.png') no-repeat 0 50%;
+}
+.infoicon.icon09 { 
+	background:url('../images/common/t-icon09.png') no-repeat 0 50%;
+}
+.infoicon.icon10 { 
+	background:url('../images/common/t-icon10.png') no-repeat 0 50%;
+}
+.infoicon.icon11 { 
+	background:url('../images/common/t-icon11.png') no-repeat 0 50%;
+}
+.infoicon.icon12 { 
+	background:url('../images/common/t-icon12.png') no-repeat 0 50%;
+}
+.infoicon.icon13 { 
+	background:url('../images/common/t-icon13.png') no-repeat 0 50%;
+}

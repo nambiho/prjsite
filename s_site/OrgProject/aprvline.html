@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta http-equiv="x-ua-compatible" content="IE=edge">
+	<meta charset="utf-8">
+
+	<link href="./common/library.nsf/orgselect/common.css" rel="stylesheet"></link>
+	<link href="./common/library.nsf/jquery/ui.fancytree.css" rel="stylesheet"></link>
+
+	<style>
+		.box {
+			border:1px solid gray;
+			height:300px;
+			overflow:auto;
+			margin-bottom:10px;
+		}
+	</style>
+	
+	<script src="./common/library.nsf/jquery/jquery-3.2.1.js"></script>
+	<script src="./common/library.nsf/jquery/jquery-ui.js"></script>
+	<script src="./common/library.nsf/jquery/jquery.fancytree.js"></script>
+
+	<script src="./common/library.nsf/js/util.js"></script>
+	<script src="./common/library.nsf/js/fancy_custom.js"></script>
+	<script src="./common/library.nsf/js/selectorg.js"></script>
+	<script src="./common/library.nsf/js/aprvlinesetting.js"></script>
+
+	<script>
+	var line;
+	function done() {
+		org.done();
+	}
+	function cancel() {
+		window.close();
+	}
+	window.addEventListener("DOMContentLoaded", function (e) {
+		var ismodal = !window.opener,
+		userinfo=util.getJson2Info("Fullname=힌트팀장|EmpNo=9005|Department=BroadNet팀|JobTitle=팀장|JobTitleCode=C11|OfficePhone=0000|HotLine=|Email=9005@hintsmtp.skbroadband.com|Photo=|SSOUserFlag=Y|FaxNum=|SystemAuthority=|IsCEO=No|LGTIdennum=123456-1234567|FolderList=|LGINotesID=CN=힌트팀장 9005/O=HANARO|BoimYn=Yes|BoimName=팀장|DBoimYn=No|EnglishName=|HTTPUserID=9005|MailDbSize=200|DBoimName=담당|mailDB=9005.nsf|mailNotes=cn=hintdev02a/o=hanaro|HomeServer=hintdev02a.skbroadband.com|MailServer=hintdev02a.skbroadband.com|MailFile=mail5/9005.nsf|AppServer=hintdev02a.skbroadband.com|BBSServer=hintdev02a.skbroadband.com|CalServer=hintdev02a.skbroadband.com|EtcServer=hintdev02a.skbroadband.com|bbscode=0000|AppNotes=cn=hintdev02a/o=hanaro|BBSNotes=cn=hintdev02a/o=hanaro|CalNotes=cn=hintdev02a/o=hanaro|EtcNotes=cn=hintdev02a/o=hanaro|BLocation=HANARO|eDepartment=BroadNet팀|eJobTitle=팀장|eJobDuty=|LGTDutyCode=C11|LGTHDepCode=0Z10|LGTDepCode=0Z20|LGTHDep=BroadNet본부|ELGTHDep=BroadNet본부|Company=SK브로드밴드|ECompany=SK브로드밴드|JobDuty=팀장|Permission=01;02;03;04;05;06;07|FDepName=0000.SK브로드밴드^ZZ01.BroadNet부문^0Z10.BroadNet본부^0Z20.BroadNet팀|NickName=|POP3Addr=|PWAddr=|ClickCallTelNo=|KMSUserFlag=Y|MailSystem=N|","\u007C"),
+		system=util.getJson2Info("", "\u0026"),
+		Arguments=window.dialogArguments,
+		Opener=ismodal?Arguments.w:opener,
+		deptcode="0Z20"||userinfo.LGTDepCode||(
+			ismodal
+				?Arguments&&Arguments.deptcode
+				:(Opener.deptcode||"")
+		),
+		selectedvalue=ismodal
+			?Arguments&&Arguments.selectedvalue
+			:Opener["<계산된 값>"]&&Opener["<계산된 값>"](),
+			
+		type=(ismodal
+			?Arguments.type
+			:"user")||"user",
+		ismulti=(ismodal
+			?Arguments.ismulti
+			:"true"==="true"),
+
+		deptdb="<계산된 값>"||system.orgcode_path,
+		deptview="jsonTreeView",
+		deptsearchagent="deptSearch",
+		userdb="<계산된 값>"||system.org_path,
+		userview="jsonUserByDeptCode",
+		usersearchagent="userSearch"
+		;
+
+		document.title=ismodal?"다이얼로그-결재선선택":"윈도우-결재선선택";
+
+		line = aprvLine({
+			treearea:"depttree",
+			ismodal:ismodal,
+			ismulti:true,
+			type:"all",
+			expandcode:deptcode,
+			selectedvalue:selectedvalue,
+			done:ismodal||"<계산된 값>"===""?null:Opener["<계산된 값>"],
+			deptinfo:{
+				path:deptdb,
+				view:deptview,
+				search:deptsearchagent
+			},
+			userinfo:{
+				path:userdb,
+				view:userview,
+				search:usersearchagent
+			}
+		});
+	}, false);
+	</script>
+</head>
+<body>
+
+
+<div class="wraper">
+	<div class="left-Area">
+		<div class="top-tit">
+			<ul class="tabs">
+				<li rel="tab1" class="tabs_on"><a href="#none">1. 결재자 지정</a></li>
+				<li rel="tab2"><a href="#none">2. 참조자/담당자</a></li>
+			</ul>
+		</div>
+		<div class="tab_content">
+			<div class="treebox">
+				<div class="tree-search">
+					<input type="text" placeholder="부서를 입력하세요." style="ime-mode:active" name="DeptSearch" id="DeptSearch">
+					<a href="#none" class="tree-searchBtn" id="deptSearchBtn">검색</a>
+				</div>
+				<div id="depttree" class="org-tree"></div>
+			</div><!-- //treebox -->
+
+			<div id="userlistwrap" class="listbox">
+				<div class="user-search">
+					<input type="text" placeholder="사용자명을 입력하세요." style="ime-mode:active" name="UserSearch" id="UserSearch">
+					<a href="#none" class="tree-searchBtn" id="userSearchBtn">검색</a>
+				</div>
+
+				<div id="dispResultUser" style="display:none">
+					<div class="inner">
+						<div id="resultUserArea" class="search_dept_area" style="height:400px;overflow:auto;"></div>
+						<div id="resultUserCloseBtn" class="btnArea t_center"><a href="#none" class="btnA">닫기</a></div>
+					</div>
+				</div>
+
+				<div id="userListArea" class="user_listarea"></div>
+			</div>
+		</div>
+	</div><!-- //left-Area -->
+
+
+	<!-- //결재자 지정 -->
+	<div id="tab1" class="right-Area">
+		<div class="box-cont">
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+					<col style="width:150px"/>
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>자주 쓰는 결재선</th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA">결재선 저장</a>
+								<a href="#none" class="btnA">삭제</a>
+							</div>
+						</th>					   
+					</tr>
+					<tr>
+						<td class="p_2" colspan="2">
+							<select class="t-select"></select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="tableStyle t_center">
+				<colgroup>
+					<col style="width:*"/>
+					<col style="width:150px"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>결재자<span class="val"><em id="apprlinecnt" class="val">0</em>명</span></th>
+					</tr>
+				</thead>
+			</table>
+			<select multiple class="mult-select" id="approveList" name="approveList"></select>
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+					<!-- <col style="width:150px"/> -->
+				</colgroup>
+				<thead>
+					<tr>
+						<th>최종결재자</th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA">변경</a>
+							</div>
+						</th>
+					</tr>
+				</thead>
+			</table>
+			<select name="lastApprove" id="lastApprove"></select>
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>협조자<span class="val"><em id="coopcnt" class="val">0</em>명</span></th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA">추가</a>
+								<a href="#none" class="btnA">제거</a>
+								<a href="#none" class="btnA">모두제거</a>
+							</div>
+						</th>
+					</tr>
+				</thead>
+			</table>
+			<select multiple class="mult-select a-4"></select>
+		</div><!-- //box-cont -->
+	</div><!-- //결재자 지정 -->
+
+	<!-- //참조자/담당자 지정 -->
+	<div id="tab2" class="right-Area" style="display:none">
+		<div class="box-cont">
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+					<col style="width:150px"/>
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>자주 쓰는 결재선</th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA ">결재선 저장</a>
+								<a href="#none" class="btnA">삭제</a>
+							</div>
+						</th>					   
+					</tr>
+					<tr>
+						<td class="p_2" colspan="2">
+							<select class="t-select">
+								<option>선택해주세요</option>
+								<option>선택해주세요</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+					<col style="width:150px"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>참조자 <span class="val">9명</span></th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA">추가</a>
+								<a href="#none" class="btnA">제거</a>
+								<a href="#none" class="btnA">모두제거</a>
+							</div>
+						</th>
+					</tr>
+				</thead>
+			</table>
+			<select multiple class="mult-select"></select>
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>담당자 <span class="val">6명</span></th>
+					</tr>
+				</thead>
+			</table>
+			<select multiple class="mult-select b-3"></select>
+		</div><!-- //box-cont -->
+	</div><!-- //참조자/담당자 지정 -->
+
+
+	<div class="bottom-btn">
+		<a href="#none" class="btnB org" id="confirmbtn">확인</a>
+		<a href="#none" class="btnB" id="cancelbtn">취소</a>
+	</div>
+</div><!-- //wraper -->
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta http-equiv="x-ua-compatible" content="IE=edge">
+	<meta charset="utf-8">
+
+	<link href="/<계산된 값>/orgselect/common.css" rel="stylesheet"></link>
+	<link href="/<계산된 값>/jquery/ui.fancytree.css" rel="stylesheet"></link>
+
+	<style>
+		.box {
+			border:1px solid gray;
+			height:300px;
+			overflow:auto;
+			margin-bottom:10px;
+		}
+	</style>
+	
+	<script src="/<계산된 값>/jquery/jquery-3.2.1.js"></script>
+	<script src="/<계산된 값>/jquery/jquery-ui.js"></script>
+	<script src="/<계산된 값>/jquery/jquery.fancytree.js"></script>
+
+	<script src="/<계산된 값>/js/util.js"></script>
+	<script src="/<계산된 값>/js/fancy_custom.js"></script>
+	<script src="/<계산된 값>/js/selectorg.js"></script>
+
+	<script>
+	var org;
+	function done() {
+		org.done();
+	}
+	function cancel() {
+		window.close();
+	}
+	window.addEventListener("DOMContentLoaded", function (e) {
+		var ismodal = !window.opener,
+		userinfo=util.getJson2Info("<계산된 값>","\u007C"),
+		system=util.getJson2Info("<계산된 값>", "\u0026"),
+		Arguments=window.dialogArguments,
+		Opener=ismodal?Arguments.window:opener,
+		deptcode="<계산된 값>"||userinfo.LGTDepCode||(
+			ismodal
+				?Arguments&&Arguments.deptcode
+				:(Opener.deptcode||"")
+		),
+		selectedvalue=ismodal
+			?Arguments&&Arguments.selectedvalue
+			:Opener["<계산된 값>"]&&Opener["<계산된 값>"](),
+		type=(ismodal
+			?Arguments.type
+			:"<계산된 값>")||"user",
+		ismulti=(ismodal
+			?Arguments.ismulti
+			:"<계산된 값>"==="true"),
+
+		deptdb="<계산된 값>"||system.orgcode_path,
+		deptview="jsonTreeView",
+		deptsearchagent="deptSearch",
+		userdb="<계산된 값>"||system.org_path,
+		userview="jsonUserByDeptCode",
+		usersearchagent="userSearch"
+		;
+
+		document.title=ismodal?"모달 다이얼로그":"윈도우";
+		/*
+		ismodal:ismodal,
+		el:"orgwrap",
+		type:type,
+		deptcode:deptcode,
+		deptdb:deptdb,
+		deptview:deptview,
+		deptsearchagent:deptsearchagent,
+		userdb:userdb,
+		userview:userview,
+		usersearchagent:usersearchagent,
+		ismulti:ismulti,
+		done:ismodal||"<계산된 값>"===""?null:Opener["<계산된 값>"]
+		*/
+
+		org = selectorg({
+			treearea:"depttree",
+			ismodal:ismodal,
+			ismulti:ismulti,
+			type:type,
+			expandcode:deptcode,
+			done:ismodal||"<계산된 값>"===""?null:Opener["<계산된 값>"],
+			deptinfo:{
+				path:deptdb,
+				view:deptview,
+				search:deptsearchagent
+			},
+			userinfo:{
+				path:userdb,
+				view:userview,
+				search:usersearchagent
+			}
+		});
+	}, false);
+	</script>
+</head>
+<body>
+
+	<div id="wrap" class="left-Area">
+		<div id="treebox" class="treebox">
+			<div class="tree-search">
+				<input type="text" placeholder="부서를 입력하세요." style="ime-mode:active" name="DeptSearch" id="DeptSearch">
+				<a href="#none" class="tree-searchBtn" id="deptSearchBtn">검색</a>
+			</div>
+
+			<div id='dispResultDept' style="display:none">
+				<div id="deptsearchitem" class="search-Item">
+					<div class="inner">
+						<div id="resultDeptArea" class="search_dept_area"></div>
+						<div id="resultDeptCloseBtn" class="btnArea t_center"><a href="#none" class="btnA">닫기</a></div>
+					</div>
+				</div>
+			</div><!--검색 결과-->
+
+			<div id="depttree" class="org-tree"></div><!--트리-->
+		</div>
+
+		<div id="userlistwrap" class="listbox" style="display:none">
+			<div class="tree-search">
+				<input type="text" placeholder="사용자명을 입력하세요." style="ime-mode:active" name="UserSearch" id="UserSearch">
+				<a href="#none" class="tree-searchBtn" id="userSearchBtn">검색</a>
+			</div>
+
+			<div id="userListArea" style="height:434px;overflow:auto"></div>
+		</div>
+
+		<div class="listbox">
+			<div id="selectlistarea" style="height:430px;overflow:auto;"></div>
+			<div style="margin:10px 0 0 10px;">
+				<a href="#none" class="btnA" id="delSelect">삭제</a>
+				<a href="#none" class="btnA" id="delSelectAll">전체삭제</a>
+			</div>
+		</div>
+
+	</div><!--wrap end-->
+
+	<div class="bottom-btn">
+		<a href="#none" class="btnB org" id="confirmbtn">확인</a>
+		<a href="#none" class="btnB" id="cancelbtn">취소</a>
+	</div>
+
+</body>
+</html>

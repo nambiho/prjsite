@@ -1,0 +1,121 @@
+
+<html>
+	<head>
+		<style>
+		.ci {
+			width:150px;
+			height:50px;
+			display:table-cell;
+			text-align:center;
+			vertical-align:middle;
+			background-color:#45a;
+			font-size:25px;
+			font-family:"terminal";
+			font-weight:bold;
+			color:white;
+			border-bottom-left-radius:20px;
+			border-top-right-radius:20px;
+			border:1px solid black;
+		}
+
+		.clickspan {
+			cursor:pointer
+		}
+
+		body {
+			font-family:"malgun gothic";
+		}
+
+		.ulstyle {
+			list-style-type:none;
+			margin-left:0px;
+			padding:0;
+			
+		}
+		
+		</style>
+	</head>
+	<script>
+		function load(){
+			var c = document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			var imgsrc=document.getElementById("imgsrc");
+			//ctx.drawImage(imgsrc,0,0,200,100);
+			//var dataurl=c.toDataURL("image/png");
+			//console.log(dataurl);
+		}
+		function spanclick (url) {
+			var ifm=document.getElementById("ifm"), urlstring=document.getElementById("urlstring");
+			url="http://hintdev02a.skbroadband.com/htmlpub"+url;
+			urlstring.innerText=url;
+			ifm.src=url;
+		}
+
+		var crypto=window.msCrypto||window.crypto;
+		var abc = crypto.getRandomValues(new Uint8Array(8));
+		Array.from(abc).map(function (a) {return String.fromCharCode(a)});
+		var abc = crypto.getRandomValues(new Uint16Array(8));
+		Array.from(abc).map(function (a) {return String.fromCharCode(a)});
+	</script>
+
+	<body onload="load();" style="overflow:hidden;">
+		<table style="width:100%; height:100%;">
+			<tr height="50px;"><td></td><td colspan="2"><span id="urlstring"></span></td></tr>
+			<tr>
+				<td width="150px" style="vertical-align:top;">
+					<ul class="ulstyle">
+						<li><span onclick="spanclick('/Approval/html/master/approval_layout_master.html');" class="clickspan">approval-layout</span></li>
+						<li><span onclick="spanclick('/Approval/html/master/approval_object_master.html');" class="clickspan">approval-object</span></li>
+
+
+						<li><span onclick="spanclick('/html/00_Master/master_board.html');" class="clickspan">master_board</span></li>
+						<li><span onclick="spanclick('/html/00_Master/master_button.html');" class="clickspan">master_button</span></li>
+						<li><span onclick="spanclick('/html/00_Master/master_form.html');" class="clickspan">master_form</span></li>
+						<li><span onclick="spanclick('/html/00_Master/master_layout.html');" class="clickspan">master_layout</span></li>
+						<li><span onclick="spanclick('/html/00_Master/master_page_alert.html');" class="clickspan">master_page_alert</span></li>
+						<li><span onclick="spanclick('/html/00_Master/master_popup_alert.html');" class="clickspan">master_popup_alert</span></li>
+						<li><span onclick="spanclick('/html/00_Master/master_popup_layer.html');" class="clickspan">master_popup_layer</span></li>
+						<li><span onclick="spanclick('/html/00_Master/master_search.html');" class="clickspan">master_search</span></li>
+						<li><span onclick="spanclick('/html/00_Master/master_table.html');" class="clickspan">master_table</span></li>
+						<li><span onclick="spanclick('/html/00_Master/master_title.html');" class="clickspan">master_title</span></li>
+
+						
+						<li><span onclick="spanclick('/html/01_Reservation/meetingRoom_admin.html')" class="clickspan">meetingRoom_admin</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/meetingRoom_list.html')" class="clickspan">meetingRoom_list</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/meetingRoom_plan_admin.html')" class="clickspan">meetingRoom_plan_admin</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/meetingRoom_popup.html')" class="clickspan">meetingRoom_popup</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/meetingRoom_selected.html')" class="clickspan">meetingRoom_selected</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/meetingRoom_write.html')" class="clickspan">meetingRoom_write</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/reservationVisit_all_admin.html')" class="clickspan">reservationVisit_all_admin</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/reservationVisit_all_admin_date.html')" class="clickspan">reservationVisit_all_admin_date</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/reservationVisit_list.html')" class="clickspan">reservationVisit_list</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/reservationVisit_place_admin.html')" class="clickspan">reservationVisit_place_admin</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/reservationVisit_popup.html')" class="clickspan">reservationVisit_popup</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/reservationVisit_purpose_admin.html')" class="clickspan">reservationVisit_purpose_admin</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/reservationVisit_view.html')" class="clickspan">reservationVisit_view</span></li>
+						<li><span onclick="spanclick('/html/01_Reservation/reservationVisit_write.html')" class="clickspan">reservationVisit_write</span></li>
+
+
+						<li><span onclick="spanclick('/survay/survay.html')" class="clickspan">survay</span></li>
+						
+						<li><span onclick="spanclick('/Survey_Main/main_design_A.html')" class="clickspan">main_design_A</span></li>
+						<li><span onclick="spanclick('/Survey_Main/main_design_B.html')" class="clickspan">main_design_B</span></li>
+						<li><span onclick="spanclick('/Survey_Main/main_design_C.html')" class="clickspan">main_design_C</span></li>
+						<li><span onclick="spanclick('/Survey_Main/main_design_D.html')" class="clickspan">main_design_D</span></li>
+					</ul>
+				</td>
+				<td>
+					<iframe src="" id="ifm" frameborder="0" style="width:100%;height:100%;"></iframe>
+				</td>
+			</tr>
+		</table>
+
+		<div class="ci">HS</div>
+		
+		<canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
+				<!--img id="imgsrc" src="file:///D:/SITE/SKB/OrgProject/guide_img5.png"-->
+		</canvas>
+	</body>
+
+	
+</html>

@@ -1,0 +1,282 @@
+http://hintdev02a.skbroadband.com/appl/syslinkedit.nsf/RequestForm?OpenForm&SysLinkunid=C67FFF4689797C9E492581A0000050C6&SysLinkType=IF-HB-020
+
+http://hintdev02a.skbroadband.com/appl/syslinkedit.nsf/RequestForm?OpenForm&SysLinkunid=4ACE9BECAEEB9CD1492581B1000D6D4F&SysLinkType=IF-HB-010
+
+
+IF-HB-010 	 급여반영요청 
+IF-HB-020 	 경조금신청서 
+IF-HB-021 	 사우회경조금신청서 
+IF-HB-030 	 우리사주 주식인출신청서 
+IF-HB-040 	 장기근속휴가신청서 
+IF-HB-050 	 초과근무신청서 
+IF-HB-051 	 초과근무결과신청서 
+IF-HB-060 	 사외교육신청서 
+IF-HB-061 	 사외교육결과보고서 
+IF-HB-070 	 부서주관교육신청서 
+IF-HB-071 	 부서주관교육결과보고서 
+IF-HB-080 	 전문자격증지원신청서 
+IF-HB-081 	 전문자격증비용신청서 
+
+http://hintdev02a.skbroadband.com/names.nsf?login&username=YE19&password=1&redirectto=http%3A%2F%2Fhintdev02a.skbroadband.com%2Fsyslib%2Forgselect.nsf%2Fopenlist%3FreadForm
+http://hintdev02a.skbroadband.com/names.nsf?login&username=0146&password=1&redirectto=http%3A%2F%2Fhintdev02a.skbroadband.com%2Fsyslib%2Forgselect.nsf%2Fopenlist%3FreadForm
+http://hintdev02a.skbroadband.com/names.nsf?login&username=9007&password=1&redirectto=http%3A%2F%2Fhintdev02a.skbroadband.com%2Fsyslib%2Forgselect.nsf%2Fopenlist%3FreadForm
+http%3A%2F%2Fhintdev02a.skbroadband.com
+http://hintdev02a.skbroadband.com/names.nsf?login&username=9007&password=1&redirectto=%2Fsyslib%2Forgselect.nsf/openlist?readForm
+키	값
+요청	GET /home_2017.nsf/LNBJsonData?readviewentries&outputformat=json&RestrictToCategory=999-001 HTTP/1.1
+키	값
+Referer	http://hintdev02a.skbroadband.com/home_2017.nsf/LNBJsonData?readviewentries&outputformat=json&RestrictToCategory=999-001
+http://hintdev02a.skbroadband.com/common/commonlib.nsf/form_common.js
+---------------------------
+eltmvmffpdl
+디스플레이
+---------------------------
+http://192.168.126.129/Groupware/APVDOCEXP01.nsf/0/94E75F25576B4834492581A6001BE0FD?opendocument
+var frms=area.frames;
+for(var i=0;i<frms.length;i++) {
+console.log(frms[i].location.href);
+}
+---------------------------
+웹 페이지 메시지
+---------------------------
+수신부서내 부서원만 선택가능합니다.
+---------------------------
+확인   
+---------------------------
+
+
+/appl/newsrelease.nsf/agFTSearch?OpenAgent&isFTS=true&viewname=byreject&start=1&count=14&query=%EB%B3%B4%EB%8F%84%EC%9E%90%EB%A3%8C
+
+http://hintdev02a.skbroadband.com/syslib/profile.nsf/WebAdminLeft_ForAdmin?Openform&expNode=0&thisNode=0&callfrom=portal
+http://hintdev02a.skbroadband.com/syslib/profile.nsf/wfmSearch?Openform
+eapp/coopdoc2017_2
+eapp/alldoc1_2017_2
+
+BroadNet부문 BroadNet본부 BroadNet팀장  
+
+참     조 BroadNet부문 BroadNet본부 BroadNet운영팀 
+
+TmpSendToDSP (TEXT) : 	경영지원부문 경영기획실 구매팀
+TmpSendToDSP_1 (TEXT) : 	경영기획실 구매팀
+SendToPartDSP (TEXT) : 	경영지원부문 경영기획실 구매팀
+
+
+http://hintdev02a.skbroadband.com/syslib/profile.nsf/WebAdminLeft_ForAdmin?Openform&expNode=0&thisNode=0&callfrom=portal
+---------------------------
+확인   
+---------------------------
+259
+---------------------------
+웹 페이지 메시지
+---------------------------
+ReturnUrl
+---------------------------
+확인   
+---------------------------
+
+256
+128
+64
+32
+16
+8
+4
+2
+1
+017.09.18~2017.10.12(18:00) 	  	 	
+3333042312325
+Function Delimiter As String
+	If LCase(me.m_session.Platform) = "windows" Then
+		pf_Delimiter = "\"
+	Else
+		pf_Delimiter = "/"
+	End If
+End Function
+CStr(doc.GetItemValue("NextAppChasu")(0)+"_1")
+/appl/eduvideomake.nsf/Approver?ReadViewEntries&Count=1&startkey=%EC%88%98%EB%8F%84%EA%B6%8C	HTTP	GET	200	text/xml	368B	31ms		0	15	16	0	0	0
+
+http://hintdev02a.skbroadband.com/names.nsf?login&username=1884&password=1&redirectto=http%3A%2F%2Fhintdev02a.skbroadband.com%2Fsyslib%2Forgselect.nsf%2Fopenlist%3FreadForm
+http://hintdev02a.skbroadband.com/names.nsf?login&username=1926&password=1&redirectto=http%3A%2F%2Fhintdev02a.skbroadband.com%2Fsyslib%2Forgselect.nsf%2Fopenlist%3FreadForm
+
+http://hintdev02a.skbroadband.com/names.nsf?login&username=1152&password=abc123456789&redirectto=http%3A%2F%2Fhintdev02a.skbroadband.com%2Fsyslib%2Forgselect.nsf%2Fopenlist%3FreadForm
+http://hintdev02a.skbroadband.com/names.nsf?login&username=2501&password=abc123456789&redirectto=http%3A%2F%2Fhintdev02a.skbroadband.com%2Fsyslib%2Forgselect.nsf%2Fopenlist%3FreadForm
+
+
+
+
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+/appl/admissioncard.nsf/byConfirm_Area?ReadViewEntries&RestrictToCategory=&count=1000	HTTP	GET	200	text/xml	348B	31ms		250	15	16	0	0	0
+Use "slib_Mandate"
+
+키	값
+요청	GET /eapp/docedit.nsf/selectcoopersusin?openpage HTTP/1.1
+'대결처리
+	Call setMandateStandard (doc, readerItem)
+	
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+http://hintdev01a.skbroadband.com/appl/edithanaro.nsf	HTTP	GET	200	text/html	14.91KB	62ms	프레임 탐색	1810	0	15	47	0	156
+%REM
+	Function setMandateAprv
+	Description: Comments for Function
+%END REM
+방향	키	값	만료 날짜	도메인	경로	보안	HTTP만
+보냄	BroadNetLoginTime	1507706089445					
+KEY_0Z20_1,2017-10-11,2017-10-13,9007,BroadNet본부 BroadNet팀,0Z20,팀원,1,CN=김창열 Z002/O=HANARO,Z002,김창열,0Z20,팀장,BroadNet본부 BroadNet팀,BroadNet부문 BroadNet본부 BroadNet팀,1234
+KEY_0Z20_1,2017-10-11,2017-10-13,9007,BroadNet본부 BroadNet팀,0Z20,팀원,1,CN=문호성 Z2962/O=HANARO,Z2962,문호성,0Z20,팀원,BroadNet본부 BroadNet팀,BroadNet부문 BroadNet본부 BroadNet팀,
+
+Function setMandateAprvLine (doc As NotesDocument, readeritem As NotesItem) As Boolean
+	
+	On Error GoTo catch
+	
+	setMandateAppLine = False
+	
+	Dim orgdb As NotesDatabase
+	Dim orgview As NotesView
+	Dim orgdoccol As NotesDocumentCollection
+	Dim orgdoc As NotesDocument
+	
+	Dim mdb As NotesDatabase
+	Dim mview As NotesView
+	Dim mdoc As NotesDocument
+	
+	Dim nm As NotesName
+	Dim dummy As Variant
+	Dim empno As String
+	Dim sCode As String
+	Dim sKey As String
+	Dim tmptitle As String
+	Dim nextappinfo As String
+	Dim deptname As String
+	Dim i As Integer
+	
+	Dim chgString As String
+	Dim item As NotesItem
+	Dim fd As Long
+	Dim td As Long
+	Dim cd As Long
+	
+	
+	'사용자의 기본 정보와 겸직 정보를 모두 가져와서
+	'현재의 deptname과 같은지를 체크 한 후에 deptcode
+	'이렇게 하는게 그나마 정확해서.
+	'deptname 은 lgcode 데이터베이스에서 같은 이름이 있음
+	'그 상위의 부서명은 정보가 없음
+	Set orgdb = New NotesDatabase("","")
+	Call orgdb.Openwithfailover(doc.Parentdatabase.server, |syslib/lgorg.nsf|)
+	If Not orgdb.isopen Then
+		Exit Function
+	End If
+	Set orgview = orgdb.getView("DuoSelect")
+	Set orgdoccol = orgview.getAllDocumentsByKey(doc.NextApprove(0))
+	If orgdoccol.count = 0 Then
+		Exit Function
+	End If
+	
+	Set orgdoc = orgdoccol.Getfirstdocument()
+	Do While Not orgdoc Is Nothing
+		If orgdoc.DeptName(0) = doc.getItemValue("AppDept" & doc.NextAppChasu(0))(0) Then
+			sCode=orgdoc.LGTDepCode(0)
+			Exit Do
+		End If
+		Set orgdoc = orgdoccol.getNextDocument(orgdoc)
+	Loop
+	
+	
+	'대결정보에서 검색할 키 생성
+	If sCode = "" Then
+		Exit Function
+	End If
+	'dummy = Split(doc.NextApprove(0), " ")
+	empno = orgdoc.LGTComnum(0)
+	sKey = empno & |_| & sCode
+	
+	
+	'대결정보 데이터베이스에서 문서 가져옴
+	Set mdb = New NotesDatabase("","")
+	Call mdb.Openwithfailover(doc.Parentdatabase.server, |syslib/mandate.nsf|)
+	If Not mdb.isopen Then
+		Exit Function
+	End If
+	Set mview = mdb.getView("vwGetMandateByKey")
+	Set mdoc=mview.getDocumentByKey(sKey, True)
+	
+	
+	cd=CLng(Format(Today, "yyyymmdd"))
+	If Not mdoc Is Nothing Then
+		fd=CLng(Replace(mdoc.fromdate(0), "-", ""))
+		td=CLng(Replace(mdoc.todate(0), "-", ""))
+		If (fd <= cd) And (td >= cd) Then
+			Set nm=New NotesName(mdoc.MandateID(0))
+			Set item = doc.getFirstItem("chgAprvLine")
+			chgString = |Appr : | & doc.NextApprove(0) & | > | & nm.Common
+			If item Is Nothing Then
+				Set item = New NotesItem(doc, "chgAprvLine", "")
+			End If
+			Call item.Appendtotextlist(chgString)
+			Call readerItem.Appendtotextlist(doc.NextApprove(0))
+			
+			doc.NextApprove=nm.Common
+			doc.NextTitle=mdoc.mLGTGrade(0)
+			
+			setMandateAppLine = True
+		End If
+	End If
+	
+	Exit Function
+catch:
+	MsgBox "해외출장품의서 > 에이전트 > setMandateAppLine > " & Str(Erl) & " / " & Error
+	Resume next_
+next_: 
+End Function
+
+
+<div class="btn_area"><button class="btn_change"><span class="btn_txt">사진변경</span></button></div>
+키	값
+Referer	http://hintdev02a.skbroadband.com/syslib/profile.nsf/wfmShowMember2?Openform&nodeid=CCC00&nodetext=B9C8CF00D305C804B7B5BCF8BD80&sortcol=grade&action=show
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+/syslib/lgorg.nsf/fmUserInfo?OpenForm&userid=CN%3D%uD78C%uD2B8%uD300%uC7A5%209005/O%3DHANARO&deptname=BroadNet%uBCF8%uBD80%20BroadNet%uD300&callfrom=Portal
+&cmn=SK%uBE0C%uB85C%uB4DC%uBC34%uB4DC
+&returnURL=http://hintdev02a.skbroadband.com/syslib/profile.nsf/wfmSearchResult?Openform&searchName=%uD78C%uD2B8%uD300%uC7A5&searchID=&searchPhone=&searchDept=&searchHPhone=&searchDWork=&action=
+키	값
+요청	GET /syslib/profile.nsf/wfmShowMember2?Openform&nodeid=RJJF0&nodetext=00490054AE30D68DBCF4C548D300&sortcol=grade&action=show HTTP/1.1
+
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+/appl/maketingsensing.nsf/vwmanual01?ReadViewEntries&viewname=vwmanual01&count=14&15f39311e16	HTTP	GET	200	text/xml	353B	16ms		889	0	16	0	0	78
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+/cug/hotline.nsf/loadviewpage?readform&viewname=view2_1&count=14
+
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+/kms/kmsdb/moral/ethicsws.nsf/fmDispList?Openform&cPage=&category=&sort=	HTTP	GET	200	text/html	44.87KB	188ms	새로 고침	0	16	31	141	0	187
+/css/hanaro_o.css	HTTP	GET	200	text/css	6.92KB	78ms	<link rel="stylesheet">	47	16	15	47	0	250
+/css/telecom_o.css	HTTP	GET	200	text/css	12.50KB	78ms	<link rel="stylesheet">	47	0	31	47	0	250
+/kms/kmsdb/moral/ethicsws.nsf/vwAllDoc?ReadViewEntries&count=1	HTTP	GET	200	text/xml	368B	16ms		234	0	16	0	0	125
+/kms/kmsdb/moral/ethicsws.nsf/Date_D?ReadViewEntries&start=1&count=15&ResortDescending=5	HTTP	GET	200	text/xml	368B	62ms		250	16	46	0	0	63
+/kms/kmsdb/moral/ethicsws.nsf/icon_uncheck.gif	HTTP	GET	200	image/gif	319B	47ms	<img>	328	0	47	0	0	0
+/kms/kmsdb/moral/ethicsws.nsf/icon_clip.gif	HTTP	GET	200	image/gif	309B	47ms	<img>	328	0	47	0	0	0
+
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+/cug/hotline.nsf%20.nsf/loadviewpage?readform&viewname=view2_1&count=14	HTTP	GET	404	text/html	433B	47ms	프레임 탐색	31	0	31	16	0	0
+
+
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+/kms/kmsdb/moral/ethicsws.nsf/fmDispList?Openform&cPage=&category=&sort=	HTTP	GET	200	text/html	6.06KB	265ms	새로 고침	0	0	249	16	0	3806
+/HTMLPUB/css/layout_contents.css	HTTP	GET	200	text/css	48.16KB	0.51s	<link rel="stylesheet">	265	0	187	328	0	3291
+/HTMLPUB/css/object.css	HTTP	GET	200	text/css	170.37KB	1.12s	<link rel="stylesheet">	265	0	203	920	0	2683
+/common/library.nsf/css_browser_selector.min.js	HTTP	GET	200	application/x-javascript	3.31KB	203ms	<script>	265	0	187	16	0	3603
+/common/library.nsf/bbsDispViewList.js	HTTP	GET	200	application/x-javascript	91.34KB	0.71s	<script>	265	0	187	531	0	3088
+/HTMLPUB/images/common/img_form.png	HTTP	GET	200	image/png	2.61KB	156ms	background-image	1497	0	156	0	0	2418
+/kms/kmsdb/moral/ethicsws.nsf/vwAllDoc_Img?ReadViewEntries&count=1	HTTP	GET	404	text/html	213B	125ms		3525	0	125	0	0	421
+
+
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+/appl/maketingsensing.nsf//loadviewpage?readform&viewname=vwmanual01&count=14	HTTP	GET	200	text/html	5.59KB	94ms	프레임 탐색	31	0	78	16	0	858
+/syslib/profile.nsf/wfmShowMember2?Openform&nodeid=B0000&nodetext=D648C564C11CBE44C2A4&sortcol=grade&action=show
+
+
+viewInfo.searchType = "sort";
+
+URL	프로토콜	방법	결과	유형	받음	걸린 시간	시작자	대기‎‎	시작‎‎	요청‎‎	응답‎‎	캐시 읽기‎‎	간격‎‎
+/syslib/lgorg.nsf/fmUserInfo?OpenForm
+&userid=CN%3D%uAE40%uD61C%uC9C4%20BA017/O%3DHANARO&deptname=CRM%uC6B4%uC601%uBCF8%uBD80%20%uBD80%uCC9CCRM%uC13C%uD130
+&callfrom=&cmn=%uBE0C%uB85C%uB4DC%uBC34%uB4DCTS
+&returnURL=http://hintdev02a.skbroadband.com/syslib/profile.nsf/wfmShowMember2?Openform&nodeid=4BA1&nodetext=BD80CC9C00430052004DC13CD130&sortcol=grade&action=show

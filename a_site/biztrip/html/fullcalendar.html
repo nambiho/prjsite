@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Full Calendar</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<link rel="stylesheet" type="text/css" href="/res/core/jquery/jquery-ui/jquery-ui.css" />
+	<script type="text/javascript" src="/res/core/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/res/core/jquery/jquery-ui/jquery-ui.min.js"></script>	
+	<script type="text/javascript" src="/res/core/newep.js"></script>	
+</head>
+<body>
+
+<div class="view-wrap">
+	<div class="viewpage ep-viewpage"> 
+		<div id="ep_content_body">
+			
+			<div id="calendar1" style="100%"><div class="cal-wrap"></div></div>
+			<!-- div id="calendar2" style="100%"><div class="cal-wrap"></div></div-->
+		</div>
+	</div>
+</div>
+
+
+<script>
+$ep
+.script("/res/ngw/biztrip/fullcalendar.js", "calendar")
+.wait(function () {
+	//$ep.log("", fullcalendar);
+	//fullcalendar($("#calendar1 .cal-wrap", $ep.ui.active()), {}).create();
+	window.fc = fullcalendar($("#calendar1 .cal-wrap", $ep.ui.active()), {
+		data : [
+		        {name:"홍길동", location:"홍콩", subject:"홍콩출장", time : "00:00 ~ 23:00", startdate:"2015-03-03", enddate:"2015-03-05", unid:"12341234123412341234123412341234"}
+		        ,{name:"신민아", location:"미국", subject:"미국출장", time : "00:00 ~ 23:00", startdate:"2015-03-03", enddate:"2015-03-05", unid:"12341234123412341234123412341234"}
+		        ,{name:"신민아", location:"미국", subject:"미국출장", time : "00:00 ~ 23:00", startdate:"2015-03-05", enddate:"2015-03-06", unid:"12341234123412341234123412341234"}
+		        ,{name:"신민아", location:"미국", subject:"미국출장", time : "00:00 ~ 23:00", startdate:"2015-03-05", enddate:"2015-03-06", unid:"12341234123412341234123412341234"}
+		        ,{name:"신민아", location:"미국", subject:"미국출장", time : "00:00 ~ 23:00", startdate:"2015-03-05", enddate:"2015-03-06", unid:"12341234123412341234123412341234"}
+		        ,{name:"신민아", location:"미국", subject:"미국출장", time : "00:00 ~ 23:00", startdate:"2015-03-05", enddate:"2015-03-06", unid:"12341234123412341234123412341234"}
+		        ,{name:"신민아", location:"미국", subject:"미국출장", time : "00:00 ~ 23:00", startdate:"2015-03-05", enddate:"2015-03-06", unid:"12341234123412341234123412341234"}
+		        ,{name:"신민아", location:"미국", subject:"미국출장", time : "00:00 ~ 23:00", startdate:"2015-03-31", enddate:"2015-04-02", unid:"12341234123412341234123412341234"}
+		]
+	}).create();
+	//fullcalendar($("#calendar2 .cal-wrap", $ep.ui.active()), {}).create();
+});
+</script>
+</body>
+</html>

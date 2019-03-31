@@ -1,0 +1,43 @@
+<div class="prolongation">
+<table class="table-form">
+	<colgroup>
+		<col width="150" /><col />
+	</colgroup>
+	<tbody>
+	<tr>
+		<th>{FORM.CURRUNTEDATE}<!--현재 만료일--></th>
+		<td><input disabled name="curEdate" type="text" style="width:110px"></td>
+	</tr>
+	<tr>
+		<th>{FORM.CHANGEEDATE}<!--변경 만료일--></th>
+		<td><input name="edate" type="text" style="width:110px"></td>
+	</tr>
+	</tbody>
+</table>
+</div>
+<script>
+$ep
+.wait(function () {
+	var _$this = $(".prolongation")
+	,_$edate = $("[name=edate]", _$this)
+	,_$curedate = $("[name=curEdate]", _$this)
+	
+	,_edate = eip_survey.options.doc.edate
+	,_chgdate = _edate.isoToDate()
+	;
+	
+	_$curedate.val(_chgdate.format("fullDate"));
+	
+	_chgdate.adjust(0,0,1,0,0,0);
+	_$edate.val(_chgdate.format("isoDateTime"));
+	
+	$ep.ui.input(_$edate , {
+		icon : "datepicker"
+		,datepicker : {
+			beforeDisableDate : function () {
+				return _chgdate;
+			}
+		}
+	});
+});
+</script>

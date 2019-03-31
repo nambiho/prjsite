@@ -1,0 +1,472 @@
+<!doctype html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>전자결재</title>
+	<!-- CSS -->
+	<link rel="stylesheet" href="../resource/css/common.css" />
+	<link rel="stylesheet" href="../resource/css/jquery-ui.css" />
+	<link rel="stylesheet" href="../resource/css/jquery-ui.theme.css" />
+	<link rel="stylesheet" href="../resource/css/skin-lion/ui.fancytree.css" type="text/css" />
+	<!-- javascript -->
+	<script src="../resource/js/jquery-1.12.3.js"></script>
+	<script src="../resource/js/jquery-ui.js"></script>
+	<script src="../resource/js/placeholders.min.js"></script>
+	<script src="../resource/js/design.js"></script>
+	<script src="../resource/js/jquery.fancytree.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	// 트리메뉴 (참고URLhttps://github.com/mar10/fancytree)
+	$(function(){
+		$(".ogr-tree").fancytree({		
+		});
+	});
+	</script>
+</head>
+<body>
+<div class="wraper">
+	<div class="left-Area">
+		<div class="top-tit">
+			<ul class="tabs">
+				<li rel="tab1" class="tabs_on"><a href="#none">1. 결재자 지정</a></li>
+				<li rel="tab2"><a href="#none">2. 참조자/담당자</a></li>
+			</ul>
+		</div>
+		<div class="tab_content">
+			<div class="treebox">
+				<div class="tree-search">
+					<input type="text" placeholder="부서를 입력하세요">
+					<a href="#none" class="tree-searchBtn">검색</a>
+				</div>
+				<div class="ogr-tree">
+					<ul>
+						<li class="folder expanded">사장
+							<ul>
+								<li class="folder">테크엑스기타
+									<ul>							
+										<li><a href="">영업기획팀</a></li>
+										<li class="folder">경영관리담당
+											<ul>							
+												<li><a href="">영업기획팀</a></li>
+												<li class="folder">경영관리담당</li>
+												<li class="folder">기업문화담당</li>
+												<li class="folder">SIA</li>
+											</ul>
+										</li>
+										<li class="folder">기업문화담당</li>
+										<li class="folder">SIA</li>
+									</ul>
+								</li>
+								<li class="folder">정보보센터
+									<ul>							
+										<li><a href="">영업기획팀</a></li>
+										<li class="folder">경영관리담당
+											<ul>							
+												<li><a href="">영업기획팀</a></li>
+												<li class="folder">경영관리담당</li>
+												<li class="folder">기업문화담당</li>
+												<li class="folder">SIA</li>
+											</ul>
+										</li>
+										<li class="folder">기업문화담당</li>
+										<li class="folder">SIA</li>
+									</ul>
+								</li>
+								<li class="folder">ISAC
+									<ul>							
+										<li><a href="">영업기획팀</a></li>
+										<li class="folder">경영관리담당
+											<ul>							
+												<li><a href="">영업기획팀</a></li>
+												<li class="folder">경영관리담당</li>
+												<li class="folder">기업문화담당</li>
+												<li class="folder">SIA</li>
+											</ul>
+										</li>
+										<li class="folder">기업문화담당</li>
+										<li class="folder">SIA</li>
+									</ul>
+								</li>
+								<li class="folder">Help Desk
+									<ul>							
+										<li><a href="">영업기획팀</a></li>
+										<li class="folder">경영관리담당
+											<ul>							
+												<li><a href="">영업기획팀</a></li>
+												<li class="folder">경영관리담당</li>
+												<li class="folder">기업문화담당</li>
+												<li class="folder">SIA</li>
+											</ul>
+										</li>
+										<li class="folder">기업문화담당</li>
+										<li class="folder">SIA</li>
+									</ul>
+								</li>
+								<li class="folder">IDC운영-서버운영
+									<ul>							
+										<li><a href="">영업기획팀</a></li>
+										<li class="folder">경영관리담당
+											<ul>							
+												<li><a href="">영업기획팀</a></li>
+												<li class="folder">경영관리담당</li>
+												<li class="folder">기업문화담당</li>
+												<li class="folder">SIA</li>
+											</ul>
+										</li>
+										<li class="folder">기업문화담당</li>
+										<li class="folder">SIA</li>
+									</ul>
+								</li>
+								<li class="folder">IDC운영-DBA운영</li>
+								<li class="folder">IDC운영-MW운영</li>
+								<li class="folder">IDC운영-네트워크운영</li>
+								<li class="folder">공용</li>
+								<li class="folder">인트라넷 운영</li>
+								<li class="folder">ERP 운영</li>
+								<li class="folder">윤리상담센터</li>
+								<li class="folder">테스트팀</li>
+								<li class="folder">기타</li>
+							</ul>
+						</li>
+					</ul>
+				</div><!-- //ogr-tree -->
+			</div><!-- //treebox -->
+
+			<div class="listbox">
+				<table class="tableStyle">
+					<colgroup>
+						<col style="width:32px"/>
+						<col style="width:70px"/>
+						<col style="width:70px"/>
+						<col style="width:100px"/>
+						<col style="width:*"/>
+					</colgroup>
+					<thead>
+						<tr>
+							<th><input type="checkbox"></th>
+							<th>직책</th>
+							<th>이름</th>
+							<th>휴대폰</th>
+							<th>사내전화</th>
+						</tr>
+					</thead>
+				</table>
+				<div class="scroll-cont">
+					<table class="tableStyle t_center">
+						<colgroup>
+							<col style="width:32px"/>
+							<col style="width:70px"/>
+							<col style="width:70px"/>
+							<col style="width:100px"/>
+							<col style="width:*"/>
+						</colgroup>
+						<tbody>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox"></td>
+								<td>Manager</td>
+								<td>홍길동</td>
+								<td>010-1234-5678</td>
+								<td>02-6400-5792</td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!-- //scroll-cont -->
+			</div><!-- //listbox -->
+		</div><!-- //tab1 -->
+	</div><!-- //left-Area -->
+
+	<div id="tab1" class="right-Area">
+		<div class="box-cont">
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+					<col style="width:150px"/>
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>자주 쓰는 결재선</th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA">결재선 저장</a>
+								<a href="#none" class="btnA">삭제</a>
+							</div>
+						</th>						
+					</tr>
+					<tr>
+						<td class="p_2" colspan="2">
+							<select class="t-select">
+								<option>선택해주세요</option>
+								<option>선택해주세요</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="tableStyle t_center">
+				<colgroup>
+					<col style="width:*"/>
+					<col style="width:150px"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>결재자<span class="val">6명</span></th>
+					</tr>
+				</thead>
+			</table>
+			<select multiple class="mult-select">
+				<option>홍길동1 사원 / IT 혁신팀</option>
+				<option>홍길동2 사원 / IT 혁신팀</option>
+				<option>홍길동3 사원 / IT 혁신팀</option>
+				<option>홍길동4 사원 / IT 혁신팀</option>
+				<option>홍길동5 사원 / IT 혁신팀</option>
+				<option>홍길동6 사원 / IT 혁신팀</option>
+			</select>
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+					<!-- <col style="width:150px"/> -->
+				</colgroup>
+				<thead>
+					<tr>
+						<th>최종결재자</th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA">변경</a>
+							</div>
+						</th>
+					</tr>
+				</thead>
+			</table>
+			<select multiple class="mult-select a-3" >
+				<option>홍길동1 사원 / IT 혁신팀</option>
+			</select>
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>협조자<span class="val">6명</span></th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA">추가</a>
+								<a href="#none" class="btnA">제거</a>
+								<a href="#none" class="btnA">모두제거</a>
+							</div>
+						</th>
+					</tr>
+				</thead>
+			</table>
+			<select multiple class="mult-select a-4">
+				<option>홍길동1 사원 / IT 혁신팀</option>
+				<option>홍길동2 사원 / IT 혁신팀</option>
+				<option>홍길동3 사원 / IT 혁신팀</option>
+				<option>홍길동4 사원 / IT 혁신팀</option>
+				<option>홍길동5 사원 / IT 혁신팀</option>
+				<option>홍길동6 사원 / IT 혁신팀</option>
+			</select>
+		</div><!-- //box-cont -->
+	</div><!-- //결재자 지정 -->
+	<div id="tab2" class="right-Area">
+		<div class="box-cont">
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+					<col style="width:150px"/>
+				</colgroup>
+				<tbody>
+					<tr>
+						<th>자주 쓰는 결재선</th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA ">결재선 저장</a>
+								<a href="#none" class="btnA">삭제</a>
+							</div>
+						</th>						
+					</tr>
+					<tr>
+						<td class="p_2" colspan="2">
+							<select class="t-select">
+								<option>선택해주세요</option>
+								<option>선택해주세요</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+					<col style="width:150px"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>참조자 <span class="val">9명</span></th>
+						<th>
+							<div class="btnArea t_right">
+								<a href="#none" class="btnA">추가</a>
+								<a href="#none" class="btnA">제거</a>
+								<a href="#none" class="btnA">모두제거</a>
+							</div>
+						</th>
+					</tr>
+				</thead>
+			</table>
+			<select multiple class="mult-select">
+				<option>홍길동1 사원 / IT 혁신팀</option>
+				<option>홍길동2 사원 / IT 혁신팀</option>
+				<option>홍길동3 사원 / IT 혁신팀</option>
+				<option>홍길동4 사원 / IT 혁신팀</option>
+				<option>홍길동5 사원 / IT 혁신팀</option>
+				<option>홍길동6 사원 / IT 혁신팀</option>
+				<option>홍길동4 사원 / IT 혁신팀</option>
+				<option>홍길동5 사원 / IT 혁신팀</option>
+				<option>홍길동6 사원 / IT 혁신팀</option>
+			</select>
+			<table class="tableStyle">
+				<colgroup>
+					<col style="width:*"/>
+				</colgroup>
+				<thead>
+					<tr>
+						<th>담당자 <span class="val">6명</span></th>
+					</tr>
+				</thead>
+			</table>
+			<select multiple class="mult-select b-3"
+				<option>홍길동2 사원 / IT 혁신팀</option>
+				<option>홍길동2 사원 / IT 혁신팀</option>
+				<option>홍길동3 사원 / IT 혁신팀</option>
+				<option>홍길동4 사원 / IT 혁신팀</option>
+				<option>홍길동5 사원 / IT 혁신팀</option>
+				<option>홍길동6 사원 / IT 혁신팀</option>
+			</select>
+		</div><!-- //box-cont -->
+	</div><!-- //참조자/담당자 지정 -->
+
+
+	<div class="bottom-btn">
+		<a href="#none" class="btnB org">확인</a>
+		<a href="#none" class="btnB">취소</a>
+	</div>
+</div><!-- //wraper -->
+</body>
+</html>
