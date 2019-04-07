@@ -1,0 +1,1284 @@
+Option Public
+Option Declare
+
+UseLSX "*javacon"
+
+%REM
+	PROCESS_ALL
+		: Method = Run
+		: 모든 프로그램 수행
+		: 디렉토리 생성 > 파일 다운로드 > 클라이언트 복호화 > 서버 암호화 > 파일 업로드 > 디렉토리 삭제
+	PROCESS_DOWNDEC
+		: Method = RunDownDec
+		: 클라이언트 복호화 까지 수행
+		: 디렉토리를 삭제 하지 않기 때문에 RemoveDirectory 메소드를 호출 해야 삭제 됨
+		: 디렉토리 생성 > 파일 다운 > 클라이언트 복호화
+	PROCESS_DOWNDECUP
+		: Method = RunDownDecUp
+		: 서버 암호화 하지 않고 업로드
+		: 디렉토리 생성 > 파일 다운 > 클라이언트 복호화 > 파일 업로드 > 디렉토리 삭제
+%END REM
+Private Const PROCESS_ALL = "1"
+Private Const PROCESS_DOWNDEC = "2"
+Private Const PROCESS_DOWNDECUP = "3"
+Private Const PROCESS_SINGLEFILE = "4"
+Public Class FASOO
+	Private m_Session As NotesSession
+	
+	Private m_doc As NotesDocument
+	
+	Private m_body As String
+	Private m_User As String
+	
+	Private m_isAttach As Boolean
+	Private m_isDoc As Boolean
+	Private m_isUser As Boolean
+	Private m_isMime As Boolean
+	
+	Private m_factory As Variant
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Property Set : Note
+	%END REM
+	Public Property Set Note As NotesDocument
+		Set me.m_doc = Note
+		me.m_isDoc = Not me.m_Doc Is Nothing
+	End Property
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Property Set : User
+	%END REM
+	Public Property Set User As String
+		me.m_User = User
+		me.m_isUser = (User <> "")
+	End Property
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Property Set : AttachBody
+	%END REM
+	Public Property Set AttachBody As String
+		me.m_Body = AttachBody
+	End Property
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Property Get : DownDir
+	%END REM
+	Public Property Get DownDir As String
+		DownDir = me.m_factory.GetDownDirectory()
+	End Property
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Property Set : Note
+	%END REM
+	Public Property Get OnSign As Boolean
+		OnSign = me.m_isDoc And me.m_isAttach
+	End Property
+
+	%REM
+		Constructor : New
+	%END REM
+	Sub New (argDoc As NotesDocument, user As String)
+		Set me.m_session = New NotesSession
+		If argDoc Is Nothing Then Exit Sub
+		Call me.pf_Initialize(argdoc, user)
+	End Sub
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Destructor : Delete
+	%END REM
+	Sub Delete
+	End Sub
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Delimiter
+		Return : Boolean
+	%END REM
+	Private Function pf_Initialize(argdoc As NotesDocument, user As String) As Boolean
+		On Error GoTo catch
+		
+		Set me.Note = argDoc
+		If me.m_isDoc Then me.m_isAttach = me.m_doc.Hasembedded
+		If Not me.m_isAttach Then Set me.Note = Nothing : Exit Function
+		If user = "" Then me.User = me.m_session.Effectiveusername : Else me.User = user
+		
+		me.m_body = "Body"
+		pf_Initialize = me.m_isDoc
+		
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & CStr(Err) & " " & Error
+		Resume next_
+next_:
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_MIME_Check
+		Return : Boolean
+	%END REM
+	Private Function pf_MIME_Check() As Boolean
+		On Error GoTo catch
+		pf_MIME_Check = False
+		
+		Dim mime As NotesMIMEEntity _
+		,child As NotesMIMEEntity _
+		,header As NotesMIMEHeader
+		
+		Set mime = me.m_Doc.Getmimeentity(me.m_Body)
+		If mime Is Nothing Then Exit Function
+		
+		Set child = mime.Getfirstchildentity()
+		Do While Not child Is Nothing
+			Set header = child.GetNthHeader("Content-Disposition")
+			If Not header Is Nothing Then
+				If LCase(header.Getheadervalandparams()) Like "attachment*" Then
+					pf_MIME_Check = True : Exit Function
+				End If
+			End If
+			Set child = child.GetNextentity(SEARCH_DEPTH)
+		Loop
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_GetFactory
+		Return : Boolean
+	%END REM
+	Private Function pf_GetFactory(processtype As String) As Boolean
+		On Error GoTo catch
+		me.m_isMime = me.pf_MIME_Check()
+		If me.m_isMime Then
+			Set me.m_factory = New MimeAttach(me.m_doc, me.m_user, me.m_body, processtype)
+		Else
+			Set me.m_factory = New ObjectAttach(me.m_doc, me.m_user, me.m_body, processtype)
+		End If
+		pf_GetFactory = True
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Run
+		Return : Boolean
+	%END REM
+	Private Function pf_FactoryRun() As Boolean
+		Dim ret As Boolean
+		ret = me.m_factory.Run()
+		pf_FactoryRun = ret
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Main
+		Return : Boolean
+	%END REM
+	Private Function pf_Main(processtype As String) As Boolean
+		pf_Main = False
+		Dim ret As Boolean
+		If Not me.OnSign Then Exit Function
+		Call me.pf_GetFactory(processtype)
+		If Not me.m_Factory.OnSign Then Exit Function
+		ret = me.pf_FactoryRun()
+		If me.m_isMime Then
+			Call me.m_doc.Closemimeentities(ret, me.m_Body)
+		End If
+		pf_Main = ret
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : Initialize
+		Param : (argDoc As NotesDocument, user As String) 
+		Return : FASOO
+	%END REM
+	Public Function Initialize(argDoc As NotesDocument, user As String) As FASOO
+		If argDoc Is Nothing Then Exit Function
+		Call me.pf_Initialize(argdoc, user)
+		Set Initialize = Me
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : Run
+		Return : FASOO
+	%END REM
+	Public Function Run() As FASOO
+		'Dim stimer As Single
+		'stimer = Timer
+		On Error GoTo catch
+		Set Run = Nothing
+		If me.pf_Main(PROCESS_ALL) Then
+		End If
+		Set Run = Me
+		'MsgBox Timer-stimer
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : RunDownDec
+		Return : FASOO
+	%END REM
+	Public Function RunDownDec() As FASOO
+		'Dim stimer As Single
+		'stimer = Timer
+		On Error GoTo catch
+		Set RunDownDec = Nothing
+		If me.pf_Main(PROCESS_DOWNDEC) Then
+		End If
+		Set RunDownDec = Me
+		'MsgBox Timer-stimer
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : RunDownDecUp
+		Return : FASOO
+	%END REM
+	Public Function RunDownDecUp() As FASOO
+		'Dim stimer As Single
+		'stimer = Timer
+		On Error GoTo catch
+		Set RunDownDecUp = Nothing
+		If me.pf_Main(PROCESS_DOWNDECUP) Then
+		End If
+		Set RunDownDecUp = Me
+		'MsgBox Timer-stimer
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : RemoveDirectory
+		Return : Boolean
+	%END REM
+	Public Function RemoveDirectory() As Boolean
+		Call me.m_factory.RemoveDirectory()
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : Save
+		Return : Boolean
+	%END REM
+	Public Function Save() As Boolean
+		If me.m_doc Is Nothing Then
+			'MsgBox "FASOO DRM 문서가 존재 하지 않습니다."
+			Exit Function
+		End If
+		Call me.m_Doc.Save(True, False)
+	End Function
+	'--------------------------------------------------------------------------------------------------------
+End Class
+Private Class FileDirectory
+	Private m_session As NotesSession
+	Private m_FSDDir As String
+	Private m_BaseDir As String
+	Private m_DrmDir As String
+	Private m_FileDir As String
+	Private m_downdir As String
+	Private m_Delimiter As String
+	
+	Public Property Get FSDDir As String
+		FSDDir = me.m_FSDDir
+	End Property
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Constructor
+	%END REM
+	Sub New(doc As NotesDocument)
+		Set me.m_session = New NotesSession
+		me.m_Delimiter = me.pf_Delimiter()
+		me.m_BaseDir = me.m_session.Getenvironmentstring("Directory", True)
+		me.m_DRMDir = me.m_Delimiter & "drm" & me.m_Delimiter & "attachment"
+		me.m_FileDir = doc.universalID & "_" & Format(Now, "yyyymmddhhnnss")
+		me.m_FSDDir = me.m_BaseDir & me.m_Delimiter & "domino" & me.m_Delimiter & "fsdinit"
+	End Sub
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Delimiter
+		Return : String
+	%END REM
+	Private Function pf_Delimiter As String
+		If LCase(me.m_session.Platform) = "windows" Then
+			pf_Delimiter = "\"
+		Else
+			pf_Delimiter = "/"
+		End If
+	End Function	
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_ChDrive
+		Return : Boolean
+	%END REM
+	Private Function pf_ChDrive () As Boolean
+		If LCase(me.m_session.Platform) = "windows" Then
+			If InStr(me.m_BaseDir, ":\") <> 0 Then
+				ChDrive StrToken(me.m_BaseDir, ":", 1) & ":"
+			End If
+		End If
+	End Function	
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Full_Directory
+		Return : String
+	%END REM
+	Private Function pf_Full_Directory As String
+		pf_Full_Directory = me.m_BaseDir & me.m_DrmDir & me.m_Delimiter & me.m_FileDir
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Make_Directory
+		Return : Boolean
+	%END REM
+	Private Function pf_Make_Directory () As Boolean
+		Dim i As Integer, d As Variant
+		Dim delimiter As String
+		delimiter = me.pf_Delimiter()
+		
+		Call me.pf_ChDrive
+		ChDir me.m_BaseDir
+		
+		d = Split(me.m_DrmDir, delimiter)
+		For i = 0 To UBound(d)
+			If d(i) <> "" Then
+				If Dir(d(i), 16) <> d(i) Then
+					MkDir d(i)
+				End If
+				ChDir |.| & delimiter & d(i)
+			End If
+		Next
+		
+		If Dir(me.m_FileDir, 16) <> me.m_FileDir Then
+			MkDir me.m_FileDir
+			ChDir |.| & delimiter & me.m_FileDir
+			MkDir |enc|
+			MkDir |dec|
+		End If
+		pf_Make_Directory = True
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Remove_File
+		Return : Boolean
+	%END REM
+	Private Function pf_Remove_File(fDir As String) As Boolean
+		On Error GoTo catch
+		Dim dirpath As String, fn As String
+		Dim delimiter As String
+		delimiter = me.pf_Delimiter()
+		
+		ChDir |.| & delimiter & fDir
+		dirpath = CurDir & delimiter & |*|
+		fn = Dir(dirpath, 0)
+		Do While (fn <> "") : Kill fn : fn = Dir(dirpath, 0) : Loop
+		
+		ChDir |..|
+		RmDir fDir
+		
+		Exit Function
+catch:
+		pf_Remove_File = True
+		Resume next_
+next_:
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Remove_Directory
+		Return : Boolean
+	%END REM
+	Private Function pf_Remove_Directory() As Boolean
+		On Error GoTo catch
+		Dim dirpath As String, fn As String
+		Dim delimiter As String
+		delimiter = me.pf_Delimiter()
+		
+		Call me.pf_ChDrive()
+		ChDir me.m_BaseDir & me.m_DrmDir
+		
+		If Dir(me.m_filedir, 16) = me.m_filedir Then
+			ChDir |.| & delimiter & me.m_filedir
+			Call pf_Remove_File("enc")
+			Call pf_Remove_File("dec")
+			
+			ChDir |..|
+			Call pf_Remove_File(me.m_filedir)
+		End If
+		Exit Function
+catch:
+		pf_Remove_Directory = True
+		Resume next_
+next_:
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : FilePath
+		Return : String
+	%END REM
+	Public Function FilePath (fn As String) As String
+		FilePath = me.pf_Full_Directory & me.m_Delimiter & fn
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : RemoveDirectory
+		Return : Boolean
+	%END REM
+	Public Function RemoveDirectory() As Boolean
+		Call me.pf_Remove_Directory()
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : MakeDirectory
+		Return : Boolean
+	%END REM
+	Public Function MakeDirectory() As Boolean
+		Call me.pf_Make_Directory()
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : pf_isExistFile
+		Return : Boolean
+	%END REM
+	Public Function isExistFile (fn As String) As Boolean
+		On Error GoTo catch
+		On Error 76 GoTo isNot
+		Dim ret As String
+		
+		Call me.pf_ChDrive()
+		ret = Dir(me.FilePath(Fn), 0)
+		isExistFile = Not (ret = "")
+		
+		Exit Function
+isNot:
+		isExistFile = False
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & CStr(Err) & " " & Error
+		isExistFile = False
+		Exit Function
+		Resume next_
+next_:
+	End Function	
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : EncFile
+		Return : String
+	%END REM
+	Public Function EncFile(fn As String) As String
+		EncFile = "enc" & me.m_Delimiter & fn
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : pf_Dec_File
+		Return : String
+	%END REM
+	Public Function DecFile(fn As String) As String
+		DecFile = "dec" & me.m_Delimiter & fn
+	End Function
+	
+End Class
+Private Class JavaInterface
+	Private m_javaSession As javaSession
+	Private m_javaClass As javaclass
+	Private m_javaObject As javaobject
+	
+	'Private m_FSDDir As String
+	Private m_Serverid_SD As String 'Server ID : 103 외 사용
+	Private m_Serverid_SN As String 'Client ID : 103 일 때 사용
+	Private m_SystemName As String
+	
+	Sub New
+		Call me.pf_JAVA_Set()
+	End Sub
+	
+	Sub Delete
+		Call me.pf_DropJavaObject()
+	End Sub
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_GetServerID
+		Return : String
+	%END REM
+	Private Function pf_GetServerID(nFileType As Integer) As String
+		Select Case nFiletype
+			Case 103
+				pf_GetServerID = me.m_Serverid_SN
+			Case Else
+				pf_GetServerID = me.m_Serverid_SD
+		End Select
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Java_Set
+		Return : Boolean
+	%END REM
+	Private Function pf_Java_Set() As Boolean
+		On Error GoTo catch
+		pf_Java_Set = False
+		Set m_javaSession = New JavaSession ()
+		Set m_javaClass = me.m_javaSession.GetClass( _
+			"com/fasoo/adk/packager/WorkPackager"_
+		)
+		Set m_javaObject = me.m_javaClass.Createobject()
+		Call me.m_javaSession.ClearJavaError
+		
+		me.m_SystemName = "LOCAS"
+		me.m_Serverid_SD = "0000000000002185"
+		me.m_Serverid_SN = "0000000000002181"
+		pf_Java_Set = True
+		Exit Function
+catch:
+		Dim jerr As JavaError
+		Set jerr = me.m_javasession.getLastJavaError()
+		If jerr.Errormsg <> "" Then
+			MsgBox jerr.errormsg,, "Error"
+		End If
+		Call me.m_javaSession.ClearJavaError()
+		
+		MsgBox Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_java_setOverWriteFlag
+		Return : Boolean
+	%END REM
+	Private Function pf_java_setOverWriteFlag(flag As Boolean) As Boolean
+		Call me.m_javaObject.setOverWriteFlag(flag)
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_java_getLastErrorNum
+		Return : String
+	%END REM
+	Private Function pf_java_getLastErrorNum() As String
+		pf_java_getLastErrorNum = CStr(me.m_javaObject.getLastErrorNum())
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_java_getLastErrorStr
+		Return : String
+	%END REM
+	Private Function pf_java_getLastErrorStr() As String
+		pf_java_getLastErrorStr = me.m_javaObject.getLastErrorStr()
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_DropJavaObject
+		Return : Boolean
+	%END REM
+	Private Function pf_DropJavaObject As Boolean
+		If Not me.m_javaObject Is Nothing Then Delete me.m_javaObject
+		If Not me.m_javaClass Is Nothing Then Delete me.m_javaClass
+		If Not me.m_javaSession Is Nothing Then
+			Call me.m_javaSession.Clearjavaerror()
+			Delete me.m_javaSession
+		End If
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : DoExtract
+		Return : Boolean
+	%END REM
+	Public Function DoExtract(fsddir As String, filetype As Integer, sourcefndir As String, targetfndir As String) As Boolean
+		On Error GoTo catch
+		DoExtract = False
+		
+		Dim nFileType As Integer _
+		,ispack As Boolean _
+		,strmsg As String _
+		,ret As Boolean
+		
+		'MsgBox "## ext start #######################################"
+		'MsgBox "FSDDir = " & fsddir
+		'MsgBox "ServerID = " & me.pf_GetServerID(filetype)
+		'MsgBox "orig = " & sourcefndir
+		'MsgBox "dec = " & targetfndir
+			
+		ret = me.m_javaObject.DoExtract( _
+			fsddir,me.pf_GetServerID(filetype), sourcefndir, targetfndir _
+		)
+		
+		If Not ret Then
+			If me.pf_java_getLastErrorNum() <> 0 Then
+				MsgBox "Java Error : " & me.pf_java_getLastErrorNum() & " " & me.pf_java_getLastErrorStr()
+			End If
+		End If
+		DoExtract = ret
+		'MsgBox "## ext end #######################################"
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		If me.m_javaObject.getLastErrorNum() <> 0 Then
+			MsgBox me.m_javaObject.getLastErrorNum() & " " & me.m_javaObject.getLastErrorStr()
+		End If
+		Resume next_
+next_:
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : DoPackaging
+		Return : Boolean
+	%END REM
+	Public Function DoPackaging(fsddir As String, sourcefndir As String, targetfndir As String, filename, ou As String, cn As String) As Boolean
+		DoPackaging = False
+		Dim nFileType As Integer _
+		,ret As Integer
+		
+		nFileType = me.GetFileType(sourcefndir)
+		If nFileType = 0 Then Exit Function
+		
+		'MsgBox "## Pack Start ###################################"
+		'MsgBox "FSDDir = " & fsddir
+		'MsgBox "ServerID = " & me.pf_GetServerID(nFileType)
+		'MsgBox "Orig File = " & sourcefndir
+		'MsgBox "Enc File = " & targetfndir
+		'MsgBox "Orig File Name = " & filename
+		'MsgBox "OU = " & ou
+		'MsgBox "CN = " & cn
+		'MsgBox "SystemName = " & me.m_SystemName
+		
+		Call me.pf_java_setOverWriteFlag(False)
+		ret = me.m_javaObject.DoPackaging ( _
+			fsddir, me.pf_GetServerID(nFileType), sourcefndir, targetfndir, filename, ou, cn, me.m_SystemName, "LOCAS_ACL", "", "", "" _
+		)
+		
+		If Not ret Then
+			If me.pf_java_getLastErrorNum() <> 0 Then
+				MsgBox "Java Error : " & me.pf_java_getLastErrorNum() & " " & me.pf_java_getLastErrorStr()
+			End If
+		End If
+		
+		DoPackaging = ret
+		
+		'MsgBox "## Pack End ###################################"
+	End Function
+
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : GetFileType
+		Return : Integer
+	%END REM
+	Public Function GetFileType(fndir As String) As Integer
+		On Error GoTo catch
+		Dim ret As Integer
+		GetFileType = 0
+		If fndir = "" Then Exit Function
+		ret = me.m_javaObject.GetFileType(fndir)
+		MsgBox "nFileType = " & ret
+		
+		Select Case ret
+			Case 20:
+				MsgBox "복호화 할 파일을 찾을 수 없습니다. (nFiletype = " & ret & ")"
+				ret = 0
+			Case 21:
+				MsgBox "복호화 파일 사이즈가 0입니다. (nFiletype = " & ret & ")"
+				ret = 0
+			Case 22:
+				MsgBox "복호화 파일을 읽을 수 없습니다. (nFiletype = " & ret & ")"
+				ret = 0
+			Case 29:
+				'MsgBox "암호화 파일이 아닙니다. (nFiletype = " & ret & ")"
+		End Select
+		GetFileType = ret
+		Exit Function
+catch:
+		MsgBox Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : isPackageFile
+		Return : Boolean
+	%END REM
+	Public Function isPackageFile(file As String) As Boolean
+		Dim ret As Boolean
+		isPackageFile = False
+		If file = "" Then Exit Function
+		ret = me.m_javaObject.isPackageFile(file)
+		isPackageFile = ret
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : isSupportFile
+		Return : Boolean
+	%END REM
+	Public Function isSupportFile(fsddir As String, fn As String) As Boolean
+		Dim bSupport As Boolean
+		bSupport = me.m_javaObject.IsSupportFile(_
+			fsddir, _
+			me.m_Serverid_SD, _
+			fn _
+		)
+		isSupportFile = bSupport
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_java_getContainerFileName
+		Return : String
+	%END REM
+	Public Function getContainerFileName() As String
+		getContainerFileName = me.m_javaObject.getContainerFileName()
+	End Function
+End Class
+Private Class FactoryBase
+	Private m_Session As NotesSession
+	Private m_doc As NotesDocument
+	Private m_user As String
+	Private m_body As String
+	
+	Private m_ProcessType As String
+	Private m_FD As FileDirectory
+	Private m_java As JavaInterface
+	Private m_Object As Variant
+	
+	Private m_curfilename As String
+	Private m_downdir As String
+	
+	Private m_ispack As Boolean
+	Private m_issupport As Boolean
+	Private m_filetype As Integer
+	
+	Public onSign As Boolean
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Constructor : New
+	%END REM
+	Sub New(doc As NotesDocument, user As String, body As String, processtype As String)
+		On Error GoTo catch
+		Set me.m_Session = New NotesSession
+		Set me.m_doc = doc
+		me.m_user = user
+		me.m_body = body
+		me.m_ProcessType = processtype
+		Set m_FD = New FileDirectory(doc)
+		Set m_java = New JavaInterface
+		
+		me.onSign = Not(me.m_doc Is Nothing _
+		And (me.m_body<>"") _
+		And me.m_FD Is Nothing _
+		And me.m_java Is Nothing _
+		And IsEmpty(me.m_Object))
+		
+		Exit Sub
+catch:
+		MsgBox GetThreadInfo(1) & " " & CStr(Err) & " " & Error
+		Resume next_
+next_: 
+	End Sub
+	
+	
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Destructor : Delete
+	%END REM
+	Sub Delete
+	End Sub
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_GetName
+		Return : String
+	%END REM
+	Private Function pf_GetName(nameFlag As String) As String
+		pf_getName = me.m_User
+		
+		If nameFlag = "" Then Exit Function
+		
+		Dim nm As New NotesName(me.m_User) _
+		,ret As String
+		Select Case UCase(nameFlag)
+			Case "CN", "COMMON": ret = nm.Common
+			Case "ABBREVIATE","ABBR": ret = nm.Abbreviated
+			Case "OU1","ORGUNIT1": ret = nm.Orgunit1
+			Case "OU2","ORGUNIT2": ret = nm.Orgunit2
+			Case "OU3","ORGUNIT3": ret = nm.Orgunit3
+			Case "OU4","ORGUNIT4": ret = nm.Orgunit4
+			Case "ORGANIZATION","ORG","O": ret = nm.Organization
+		End Select
+		If ret = "" Then
+			ret = nm.Common
+		End If
+		pf_getName = ret
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Encrypt
+		Return : Boolean
+	%END REM
+	Private Function pf_Encrypt () As Boolean
+		pf_Encrypt = False
+		On Error GoTo catch
+		Dim ret As Boolean _
+		,decfile As String
+		
+		If Not me.m_issupport Then pf_Encrypt = True : Exit Function
+		decfile = me.m_FD.DecFile(me.m_curfilename)
+		
+		If me.m_FD.isExistFile(decfile) Then
+			pf_Encrypt = me.m_java.DoPackaging( _
+			me.m_FD.FSDDir, _
+			me.m_FD.FilePath(decfile), _
+			me.m_FD.FilePath(me.m_FD.EncFile(me.m_curfilename)), _
+			me.m_curfilename, _
+			"drmadmin", _ 'me.pf_GetName("ou1"), _
+			"DRM관리" _ 'me.pf_GetName("cn") _
+			)
+		End If
+		
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & CStr(Err) & " " & Error
+		Resume next_
+next_: 
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_DoExtract
+		Return : Boolean
+	%END REM
+	Private Function pf_DoExtract() As Boolean
+		pf_DoExtract = False
+		On Error GoTo catch
+		If me.m_ispack Then
+			If Not me.m_java.DoExtract( _
+			me.m_FD.FSDDir, _
+			me.m_filetype, _
+			me.m_FD.FilePath(me.m_curfilename), _
+			me.m_FD.FilePath(me.m_FD.DecFile(me.m_curfilename)) _
+			) Then Exit Function
+		Else
+			FileCopy me.m_FD.FilePath(me.m_curfilename), me.m_FD.FilePath(me.m_FD.DecFile(me.m_curfilename))
+		End If
+		pf_DoExtract = True
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & CStr(Err) & " " & Error
+		Resume next_
+next_: 
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Compute
+		Return : Boolean
+	%END REM
+	Private Function pf_Process() As Boolean
+		pf_Process = False
+		Dim sfiledir As String
+		On Error GoTo catch
+		Call me.pf_File_Check()
+		Select Case me.m_ProcessType
+		Case PROCESS_ALL:
+			Call me.pf_DoExtract()
+			If Not me.pf_Encrypt() Then Exit Function
+			If me.m_issupport Then sFileDir = me.m_FD.EncFile(me.m_curfilename) : Else sFileDir = me.m_curfilename
+			Call me.m_Object.pf_Embed(sFileDir)
+		Case PROCESS_DOWNDEC:
+			Call me.pf_DoExtract()
+			me.m_downdir = me.m_FD.FilePath(me.m_FD.DecFile(""))
+		Case PROCESS_DOWNDECUP:
+			Call me.pf_DoExtract()
+			Call me.m_Object.pf_Embed(me.m_FD.DecFile(me.m_curfilename))
+		End Select
+		pf_Process = True
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & CStr(Err) & " " & Error
+		Resume next_
+next_: 
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_File_Check
+		Return : Boolean
+	%END REM
+	Private Function pf_File_Check() As Boolean
+		pf_File_Check = False
+		On Error GoTo catch
+		If Not me.m_FD.isExistFile(me.m_curfilename) Then Exit Function
+		me.m_ispack = me.m_java.isPackageFile(me.m_FD.FilePath(me.m_curfilename))
+		me.m_issupport = me.m_java.isSupportFile(me.m_FD.FSDDir, me.m_curfilename)
+		me.m_filetype = me.m_java.GetFileType(me.m_FD.FilePath(me.m_curfilename))
+		pf_File_Check = True
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & CStr(Err) & " " & Error
+		Resume next_
+next_: 
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : Process
+		Return : Boolean
+	%END REM
+	Public Function Run() As Boolean
+		On Error GoTo catch
+		Run = False
+		Call me.m_FD.MakeDirectory()
+		Call me.m_Object.pf_Process()
+		Select Case me.m_ProcessType
+		Case PROCESS_ALL, PROCESS_DOWNDECUP:
+			Call me.m_FD.RemoveDirectory()
+		Case PROCESS_DOWNDEC:
+		End Select
+		Run = True
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & CStr(Err) & " " & Error
+		Resume next_
+next_: 
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : GetDownDirectory
+		Return : String
+	%END REM
+	Public Function GetDownDirectory As String
+		GetDownDirectory = ""
+		If me.m_ProcessType <> PROCESS_DOWNDEC Then Exit Function
+		GetDownDirectory = me.m_downdir
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Public Function : RemoveDirectory
+		Return : Boolean
+	%END REM
+	Public Function RemoveDirectory() As Boolean
+		Call me.m_FD.RemoveDirectory()
+	End Function
+End Class
+Private Class MimeAttach As FactoryBase
+	Private m_mime As NotesMIMEEntity
+	Private m_attMime As NotesMIMEEntity
+	Private m_base64_filename As String
+	
+	Sub New(doc As NotesDocument, user As String, body As String, processtype As String)
+		Set me.m_mime = me.m_doc.GetMimeEntity(me.m_body)
+		If  IsEmpty(me.m_Object) Then Set me.m_Object = Me
+	End Sub
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Destructor : Delete
+	%END REM
+	Sub Delete
+	End Sub
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_GetOriginalFilename
+		Return : String
+	%END REM
+	Private Function pf_GetOriginalFilename(data As String) As String
+		On Error GoTo catch
+		pf_GetOriginalFilename = ""
+		Dim eval As Variant
+		eval = Evaluate(|@Word("| & Replace(data, |"|, |\"|) & |"; "filename="; -1)|)
+		pf_GetOriginalFilename = Replace(eval(0), |"|, ||)
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Embed
+		Return : Boolean
+	%END REM
+	Private Function pf_Embed (upfile As String) As Boolean
+		On Error GoTo catch
+		
+		Dim theader As NotesMIMEHeader _
+		,stream As NotesStream _
+		,rt As NotesRichTextItem
+		
+		Set stream = me.m_Session.CreateStream
+		Call stream.Truncate
+		stream.Position = 0
+		
+		If Not stream.Open(me.m_FD.FilePath(upfile), "binary") Then Exit Function
+		Set theader = me.m_attMime.GetNthHeader("Content-Type")
+		Call me.m_attMime.Setcontentfrombytes(stream, _
+			theader.Getheaderval() & "; name=" & me.m_base64_filename, _ 
+			ENC_IDENTITY_BINARY _
+		)
+		Call me.m_attMime.Encodecontent(ENC_BASE64)
+		Call stream.Close()
+		Call stream.Truncate()
+		
+		pf_Embed = True
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Exit Function
+		Resume next_
+next_:
+	End Function
+	
+	Public Function pf_GetChildMime(vChild As NotesMIMEEntity) As NotesMIMEEntity
+		On Error GoTo catch
+		Dim child As NotesMIMEEntity _
+		,header As NotesMIMEHeader
+		Set pf_GetChildMime = Nothing
+		
+		If vChild Is Nothing Then Set child = me.m_mime.Getfirstchildentity() : Else Set child = vChild.Getnextentity(SEARCH_DEPTH)
+		
+		Do While Not child Is Nothing
+			Set header = child.GetNthHeader("Content-Disposition")
+			If Not header Is Nothing Then
+				If LCase(header.Getheadervalandparams(False , True)) Like "attachment*" Then
+					Set pf_GetChildMime = child
+					Exit Function
+				End If
+			End If
+			Set child = child.Getnextentity(SEARCH_DEPTH)
+		Loop
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Process
+		Return : Boolean
+	%END REM
+	Private Function pf_Process() As Boolean
+		On Error GoTo catch
+		Dim child As NotesMIMEEntity _
+		,dheader As NotesMIMEHeader _
+		,headerval As String
+		
+		Do While True
+			Set child = me.pf_GetChildMime(child)
+			Set me.m_attMime = child
+			If child Is Nothing Then Exit Function
+			Set dheader = child.GetNthHeader("Content-Disposition")
+			
+			headerval = dheader.Getheadervalandparams(True , False)
+			headerval = Replace(headerval, Chr(13) & Chr(10) & | |, "")
+			headerval = Replace(headerval, Chr(10) & Chr(13) & | |, "")
+			headerval = Replace(headerval, | | & Chr(13) & Chr(10), "")
+			headerval = Replace(headerval, | | & Chr(10) & Chr(13), "")
+			
+			Call dheader.Setheadervalandparams(headerval)
+			
+			me.m_curfilename = me.pf_GetOriginalFilename(dheader.Getheadervalandparams(False , True))
+			
+			me.m_base64_filename = Replace(dheader.Getparamval("filename", False), |"|, ||)
+			If me.pf_Extract_file() Then
+				Call FactoryBase..pf_Process()
+			End If
+		Loop
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Extract_file
+		Return : Boolean
+	%END REM
+	Private Function pf_Extract_file() As Boolean
+		On Error GoTo catch
+		pf_Extract_file = False
+		
+		Dim stream As NotesStream _
+		,filepath As String
+		
+		Set stream = me.m_Session.CreateStream
+		Call stream.Truncate
+		stream.Position = 0
+		filepath = me.m_FD.FilePath(me.m_curfilename)
+		If Not stream.Open(filepath, "binary") Then
+			Exit Function
+		End If
+		Call me.m_attMime.Getcontentasbytes(stream, True)
+		Call stream.Close()
+		Call stream.Truncate()
+
+		pf_Extract_file = True
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+	
+End Class
+
+Private Class ObjectAttach As FactoryBase
+	
+	Sub New(doc As NotesDocument, user As String, body As String, processtype As String)
+		If  IsEmpty(me.m_Object) Then Set me.m_Object = Me
+	End Sub
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Destructor : Delete
+	%END REM
+	Sub Delete
+	End Sub
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Body_NotesItem
+		Return : Boolean
+	%END REM
+	Private Function pf_Body_NotesItem (ITEM As Variant) As Boolean
+		pf_Body_NotesItem = False
+		If Not me.m_Doc.hasitem(me.m_body) Then Exit Function
+		Set ITEM = me.m_Doc.GetFirstItem(me.m_body)
+		pf_Body_NotesItem = True
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Embed
+		Return : Boolean
+	%END REM
+	Private Function pf_Embed (upfile As String) As Boolean
+		On Error GoTo catch
+		
+		Dim embed As NotesEmbeddedObject _
+		,rttemp As NotesRichTextItem _
+		,rt As NotesRichTextItem
+		
+		Call me.pf_Body_NotesItem(rt)
+		If Not rt Is Nothing Then
+			Set embed = rt.Getembeddedobject(me.m_curfilename)
+			If Not embed Is Nothing Then Call embed.Remove()
+		Else
+			Set rt = New NotesRichTextItem(me.m_doc, me.m_Body)
+		End If
+		
+		Set embed = me.m_doc.Getattachment(me.m_curfilename)
+		If Not embed Is Nothing Then Call embed.Remove()
+		
+		Call rt.Embedobject(EMBED_ATTACHMENT, "", me.m_FD.FilePath(upfile))
+		
+		pf_Embed = True
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Extract_file
+		Return : Boolean
+	%END REM
+	Private Function pf_Extract_file() As Boolean
+		On Error GoTo catch
+		pf_Extract_file = False
+		Dim embed As NotesEmbeddedObject _
+		,filepath As String
+		
+		Set embed = me.m_doc.Getattachment(me.m_curfilename)
+		If embed Is Nothing Then Exit Function
+		filepath = me.m_FD.FilePath(me.m_curfilename)
+		Call embed.Extractfile(filepath)
+		
+		pf_Extract_file = True
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+	
+	'--------------------------------------------------------------------------------------------------------
+	%REM
+		Private Function : pf_Process
+		Return : Boolean
+	%END REM
+	Private Function pf_Process() As Boolean
+		On Error GoTo catch
+		Dim filenames As Variant
+		pf_Process = False
+		filenames = Evaluate(|@AttachmentNames|, me.m_Doc)
+		If filenames(0) = "" Or IsEmpty(filenames) Then Exit Function
+		ForAll x In filenames
+			me.m_curfilename = x
+			If me.pf_Extract_file() Then
+				Call FactoryBase..pf_Process()
+			End If
+		End ForAll
+		
+		Exit Function
+catch:
+		MsgBox GetThreadInfo(1) & " " & Erl & " " & Error
+		Resume next_
+next_:
+	End Function
+End Class
